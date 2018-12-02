@@ -5,6 +5,7 @@ import com.wmq.spring.conditional.AliBaBaConditional;
 import com.wmq.spring.config.BeanInitAndDestroyConfig;
 import com.wmq.spring.config.ImportConfig;
 import com.wmq.spring.config.SpringConfig;
+import com.wmq.spring.config.TestBeanPostProcessorConfig;
 import com.wmq.spring.entry.*;
 import com.wmq.spring.factorybean.MyFactoryBean;
 import com.wmq.spring.selector.MyImportBeanDefinitionRegistrar;
@@ -173,5 +174,11 @@ public class SpringLearnTest {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanInitAndDestroyConfig.class);
         Object beanInitAndDestroy = applicationContext.getBean("beanInitAndDestory");
         applicationContext.close();
+    }
+
+    @Test
+    public void testTestBeanPostProcessor(){
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestBeanPostProcessorConfig .class);
+        Object dog = applicationContext.getBean("dog");
     }
 }
