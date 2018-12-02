@@ -1,16 +1,20 @@
 package com.wmq.spring.test;
 
+import com.wmq.spring.conditional.AliBaBaConditional;
 import com.wmq.spring.config.BeanInitAndDestroyConfig;
 import com.wmq.spring.config.ImportConfig;
 import com.wmq.spring.config.SpringConfig;
-import com.wmq.spring.entry.BeanInitAndDestroy;
-import com.wmq.spring.entry.Leader;
-import com.wmq.spring.entry.Person;
-import com.wmq.spring.entry.Student;
+import com.wmq.spring.entry.*;
 import com.wmq.spring.factorybean.MyFactoryBean;
+import com.wmq.spring.selector.MyImportBeanDefinitionRegistrar;
+import com.wmq.spring.selector.MyImportSelector;
 import org.junit.Test;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ImportSelector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +25,8 @@ public class SpringLearnTest {
     private static final ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(SpringConfig.class);
     @Test
     /**
-     * 测试Configuration 和 Bean注解 以及ComponentScan的一些属性值的租用
+     * 测试Configuration 和 Bean注解 以及ComponentScan的一些属性值的使用
+     * 用法参见：{@link SpringConfig}
      */
     public void TestConfigurationAndBeanAndComponentScan(){
         //通过类型获取Bean
@@ -67,9 +72,10 @@ public class SpringLearnTest {
     }
 
     /**
-     * 测试Conditional注解  当满足条件时才加载bean到ioc容器，使用该注解要实现Conditional接口，定义过滤条件
+     * 测试Conditional注解  当满足条件时才加载bean到ioc容器，使用该注解要实现Conditional{@link Condition}接口，定义过滤条件
      * 放在类上面表示不满足条件时真个配置类的配置的所有bean都不注入到ioc中
      * 类似还有针对真个ioc容器的过滤方式FilterType.CUSTOM 同样要实现TypeFilter接口定义 过滤规则，貌似只有在包含时生效
+     * 用法参见：{@link AliBaBaConditional}
      */
     @Test
     public void testConditional(){
@@ -81,6 +87,7 @@ public class SpringLearnTest {
 
     /**
      * 测试Import注解，批量注入bean到ioc
+     * 用法参见：{@link ImportConfig}
      */
     @Test
     public void testImport(){
@@ -91,7 +98,8 @@ public class SpringLearnTest {
     }
 
     /**
-     * 测试ImportSelector选择器，放在Import注解中，批量注入bean到ioc 自定一个Selector类，选择要注入的bean
+     * 测试ImportSelector选择器，放在Import注解中，批量注入bean到ioc 自定一个{@link ImportSelector}，选择要注入的bean
+     * 用法参见：{@link MyImportSelector}
      */
     @Test
     public void testImportSelector(){
@@ -101,6 +109,7 @@ public class SpringLearnTest {
     private static final ApplicationContext IMPORT_CONFIG = new AnnotationConfigApplicationContext(ImportConfig.class);
     /**
      * 测试ImportBeanDefinitionRegistrar注册器，放在Import注解中 批量注入bean到ioc 自定一个ImportBeanDefinitionRegistrar类，选择要注入的bean
+     * 用法参见：{@link MyImportBeanDefinitionRegistrar}
      */
     @Test
     public void testImportBeanDefinitionRegistrar(){
@@ -115,6 +124,7 @@ public class SpringLearnTest {
     @Test
     /**
      * 测试factoryBean 创建工厂bean
+     * 用法参见：{@link MyFactoryBean}
      */
     public void testFactoryBean(){
         Object myFactoryBean = FACTORY_BEAN_CONFIG.getBean("myFactoryBean");
@@ -128,15 +138,29 @@ public class SpringLearnTest {
     @Test
     /**
      * 测试bean 的创建、初始化、销毁时间
+     *
      * 单例
      *      饿汉式 创建(容器启动时) 初始化（容器启动时） 销毁（容器关闭时）
      *      懒汉式 创建(获取bean时) 初始化（获取bean时） 销毁（容器关闭时）
+     *
      * 多例
-     *      创建(获取bean时) 初始化（获取bean时） 销毁（容器关闭时）
+     *      创建(获取bean时) 初始化（获取bean时） 销毁（容器不负责销毁）
+     *
      *  控制bean的初始化销毁方法
      *      1、使用@Bean注解
-     *     @Bean(initMethod = "init",destroyMethod = "destroy")
-     *      2、让bean实现InitializingBean（初始化）,DisposableBean（销毁）接口
+     *
+     *          @Bean(initMethod = "init",destroyMethod = "destroy")
+     *          用法参见：{@link BeanInitAndDestroyConfig}
+     *
+     *      2、让bean实现{@link InitializingBean}（初始化）,{@link DisposableBean}（销毁）接口
+     *
+     *          用法参见 ： 用法参见：{@link Car}
+     *
+     *      3、使用JSR250（一下两个注解都是放在bean的方法上）
+     *
+     *          @PostConstruct：在bean创建完成并且属性赋值完成来初始化bean
+     *          @PreDestroy：在容器销毁bean之前来通知我们进行清理工作
+     *           用法参见：{@link Dog}
      */
     public void testBeanInitAndDestory(){
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanInitAndDestroyConfig.class);
