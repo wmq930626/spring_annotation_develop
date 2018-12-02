@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 @Configuration
-@ComponentScan({"com.wmq.spring.entry"})
+@ComponentScan({"com.wmq.spring.entry","com.wmq.spring.beanPostProcessor"})
 public class BeanInitAndDestroyConfig {
     @Bean(initMethod = "init",destroyMethod = "destroy")
     @Lazy

@@ -1,5 +1,6 @@
 package com.wmq.spring.test;
 
+import com.wmq.spring.beanPostProcessor.MyBeanPostProcessor;
 import com.wmq.spring.conditional.AliBaBaConditional;
 import com.wmq.spring.config.BeanInitAndDestroyConfig;
 import com.wmq.spring.config.ImportConfig;
@@ -11,6 +12,7 @@ import com.wmq.spring.selector.MyImportSelector;
 import org.junit.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Condition;
@@ -161,6 +163,11 @@ public class SpringLearnTest {
      *          @PostConstruct：在bean创建完成并且属性赋值完成来初始化bean
      *          @PreDestroy：在容器销毁bean之前来通知我们进行清理工作
      *           用法参见：{@link Dog}
+     *
+     *       4、使用bean后置处理器 自定义一个BeanPostProcessor实现{@link BeanPostProcessor}
+     *              postProcessBeforeInitialization:在bean初始化之前工作
+     *              postProcessAfterInitialization：在bean初始化之后工作
+     *              用法参见：{@link MyBeanPostProcessor}
      */
     public void testBeanInitAndDestory(){
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanInitAndDestroyConfig.class);
