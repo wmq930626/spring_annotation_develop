@@ -1,7 +1,9 @@
 package com.wmq.spring.test;
 
+import com.wmq.spring.config.BeanInitAndDestroyConfig;
 import com.wmq.spring.config.ImportConfig;
 import com.wmq.spring.config.SpringConfig;
+import com.wmq.spring.entry.BeanInitAndDestroy;
 import com.wmq.spring.entry.Leader;
 import com.wmq.spring.entry.Person;
 import com.wmq.spring.entry.Student;
@@ -121,5 +123,20 @@ public class SpringLearnTest {
         Object myFactoryBean1 = FACTORY_BEAN_CONFIG.getBean("&myFactoryBean");
         System.out.println(myFactoryBean1.getClass());
     }
+    //private static final ApplicationContext BEAN_INIT_AND_DESTORY = new AnnotationConfigApplicationContext(MyFactoryBean.class);
 
+    @Test
+    /**
+     * 测试bean 的创建、初始化、销毁时间
+     * 单例
+     *      饿汉式 创建(容器启动时) 初始化（容器启动时） 销毁（容器关闭时）
+     *      懒汉式 创建(获取bean时) 初始化（获取bean时） 销毁（容器关闭时）
+     * 多例
+     *      创建(获取bean时) 初始化（获取bean时） 销毁（容器关闭时）
+     */
+    public void testBeanInitAndDestory(){
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanInitAndDestroyConfig.class);
+        Object beanInitAndDestroy = applicationContext.getBean("beanInitAndDestory");
+        applicationContext.close();
+    }
 }
