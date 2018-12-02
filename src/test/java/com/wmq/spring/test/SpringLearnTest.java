@@ -133,6 +133,10 @@ public class SpringLearnTest {
      *      懒汉式 创建(获取bean时) 初始化（获取bean时） 销毁（容器关闭时）
      * 多例
      *      创建(获取bean时) 初始化（获取bean时） 销毁（容器关闭时）
+     *  控制bean的初始化销毁方法
+     *      1、使用@Bean注解
+     *     @Bean(initMethod = "init",destroyMethod = "destroy")
+     *      2、让bean实现InitializingBean（初始化）,DisposableBean（销毁）接口
      */
     public void testBeanInitAndDestory(){
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanInitAndDestroyConfig.class);
