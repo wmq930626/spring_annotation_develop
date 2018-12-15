@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Configuration  //等同于以前的bean.xml 告诉spring这是  一个配置类
 //等同于<ComponentScan></ComponentScan>标签
-//@Conditional({AliBaBaConditional.class})//放在类上面表示不满足条件时真个配置类的配置的所有bean都不注入到ioc中
+@Conditional({AliBaBaConditional.class})//放在类上面表示不满足条件时真个配置类的配置的所有bean都不注入到ioc中
 @ComponentScan(
             //指定扫描那些包
             value = {"com.wmq.spring.service","com.wmq.spring.dao","com.wmq.spring.controller"},

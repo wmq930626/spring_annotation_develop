@@ -2,10 +2,7 @@ package com.wmq.spring.test;
 
 import com.wmq.spring.beanPostProcessor.MyBeanPostProcessor;
 import com.wmq.spring.conditional.AliBaBaConditional;
-import com.wmq.spring.config.BeanInitAndDestroyConfig;
-import com.wmq.spring.config.ImportConfig;
-import com.wmq.spring.config.SpringConfig;
-import com.wmq.spring.config.TestBeanPostProcessorConfig;
+import com.wmq.spring.config.*;
 import com.wmq.spring.entry.*;
 import com.wmq.spring.factorybean.MyFactoryBean;
 import com.wmq.spring.selector.MyImportBeanDefinitionRegistrar;
@@ -18,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ImportSelector;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +73,7 @@ public class SpringLearnTest {
     }
 
     /**
-     * 测试Conditional注解  当满足条件时才加载bean到ioc容器，使用该注解要实现Conditional{@link Condition}接口，定义过滤条件
+     * 测试Conditional注解  当满足条件时才加载bean到ioc容器，使用该注解要实现Condition{@link Condition}接口，定义过滤条件
      * 放在类上面表示不满足条件时真个配置类的配置的所有bean都不注入到ioc中
      * 类似还有针对真个ioc容器的过滤方式FilterType.CUSTOM 同样要实现TypeFilter接口定义 过滤规则，貌似只有在包含时生效
      * 用法参见：{@link AliBaBaConditional}
@@ -181,4 +179,22 @@ public class SpringLearnTest {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestBeanPostProcessorConfig .class);
         Object dog = applicationContext.getBean("dog");
     }
+    @Test
+    public void TestPropertyValue(){
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(TestValueAndPropertyConfig.class);
+        String[] beanDefinitionNames = annotationConfigApplicationContext.getBeanDefinitionNames();
+        for (String name : beanDefinitionNames) {
+            System.out.println(name);
+        }
+        Person bean = annotationConfigApplicationContext.getBean(Person.class);
+        System.out.println(bean);
+    }
+
+    @Test
+    public void TestPropertyValue1(){
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(TestValueAndPropertyConfig.class);
+        ConfigurableEnvironment environment = annotationConfigApplicationContext.getEnvironment();
+        System.out.println(environment.getProperty("ZHANSAN.SEX"));
+    }
+
 }

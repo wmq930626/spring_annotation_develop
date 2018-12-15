@@ -21,12 +21,12 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
      * @throws BeansException
      */
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
-        System.out.println("postProcessBeforeInitialization" + o.getClass());
+        System.out.println("postProcessBeforeInitialization=============" + o.getClass());
         return o;
     }
 
     public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
-        System.out.println("postProcessBeforeInitialization" + o.getClass());
+        System.out.println("postProcessBeforeInitialization=============" + o.getClass());
         return o;
     }
 }
