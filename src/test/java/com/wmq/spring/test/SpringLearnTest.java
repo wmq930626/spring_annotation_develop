@@ -1,5 +1,6 @@
 package com.wmq.spring.test;
 
+import com.wmq.spring.aware.MyAwareBean;
 import com.wmq.spring.beanPostProcessor.MyBeanPostProcessor;
 import com.wmq.spring.conditional.AliBaBaConditional;
 import com.wmq.spring.config.*;
@@ -16,7 +17,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -195,6 +201,28 @@ public class SpringLearnTest {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(TestValueAndPropertyConfig.class);
         ConfigurableEnvironment environment = annotationConfigApplicationContext.getEnvironment();
         System.out.println(environment.getProperty("ZHANSAN.SEX"));
+    }
+
+    @Test
+    public void TestAwareProcessor() throws IOException {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AwareConfig.class);
+        MyAwareBean bean = applicationContext.getBean(MyAwareBean.class);
+        ResourceLoader resourceLoader = bean.getResourceLoader();
+        System.out.println("resourceLoader:"+resourceLoader);
+        Resource resource=resourceLoader.getResource("classpath:aware-test.txt");
+        System.out.println("ResourceLoader加载的文件内容是:");
+        String line=null;
+        BufferedReader reader=new BufferedReader(new InputStreamReader(resource.getInputStream()));
+        while((line=reader.readLine())!=null){
+            System.out.println(line);
+        }
+        reader.close();
+    }
+
+    @Test
+    public void TestAutowired(){
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AutoWiredTestConfig.class);
+        Car bean = applicationContext.getBean(Car.class);
     }
 
 }
