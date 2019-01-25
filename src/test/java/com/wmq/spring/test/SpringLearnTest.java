@@ -8,6 +8,7 @@ import com.wmq.spring.entry.*;
 import com.wmq.spring.factorybean.MyFactoryBean;
 import com.wmq.spring.selector.MyImportBeanDefinitionRegistrar;
 import com.wmq.spring.selector.MyImportSelector;
+import com.wmq.spring.service.SpringService;
 import org.junit.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -223,6 +224,31 @@ public class SpringLearnTest {
     public void TestAutowired(){
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AutoWiredTestConfig.class);
         Car bean = applicationContext.getBean(Car.class);
+    }
+
+    @Test
+    public void testProfile(){
+        //创建一个applicationContext
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        //设置容器的运行环境
+        ConfigurableEnvironment environment = applicationContext.getEnvironment();
+        environment.setActiveProfiles("test");
+        //注册容器
+        applicationContext.register(TestProfileConfig.class);
+        //刷新容器
+        applicationContext.refresh();
+        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+        for (String name : beanDefinitionNames) {
+            System.out.println(name);
+        }
+    }
+
+    @Test
+    public void testAspect(){
+        //创建一个applicationContext
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyAopConfig.class);
+        SpringService bean = applicationContext.getBean(SpringService.class);
+        bean.print(1,2);
     }
 
 }

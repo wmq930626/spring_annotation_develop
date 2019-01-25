@@ -1,5 +1,6 @@
 package com.wmq.spring.testautoWiredandqualifier;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
  * Date:2018/12/15
  * Time:15:11
  */
+//@Primary
 @Service("thinkingInJava")
 public class ThinkingInJava implements BookService {
     public void printBookName() {

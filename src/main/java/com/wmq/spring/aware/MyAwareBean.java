@@ -1,5 +1,6 @@
 package com.wmq.spring.aware;
 
+import org.aspectj.lang.annotation.*;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 
